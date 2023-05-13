@@ -8,11 +8,17 @@ Minimal set of files to use Firebird Embedded. Ideal for build test environments
 
 Simply `git checkout` this repository. All necessary files are included.
 
+```powershell
+git clone --quiet --depth 1 --single-branch https://github.com/fdcastel/firebird-binaries 
+```
+
 
 
 ## Usage 
 
 Just configure your application to use `fbclient.dll` of the desired Firebird version. The configuration file `firebird.conf` is already configured to use the embedded server.
+
+These are 64-bit binaries. For 32-bit please use the [`x86` branch](https://github.com/fdcastel/firebird-binaries/tree/x86) of this repository.
 
 
 
@@ -21,12 +27,18 @@ Just configure your application to use `fbclient.dll` of the desired Firebird ve
 You can use `Rebuild-Databases.ps1` script to build empty databases for each Firebird version.
 
 ```powershell
-Rebuild-Databases.ps1 [[-DbPath] <string>] [[-DbPrefix] <string>] [<CommonParameters>]
+Rebuild-Databases.ps1 [[-DbPath] <string>] [[-DbPrefix] <string>] [[-Engines] <string[]>] [[-PageSize] <int>] [[-Charset] <string>] [<CommonParameters>]
 ```
 
-You may inform the target folder with `-DbPath`. If not informed `$env:TEMP\firebird-databases` will be used.
+### Parameters
 
-You may inform a database prefix with `-DbPrefix`. If not informed `test` will be used.
+| Parameter   | Description                                                  | Default                        |
+| ----------- | ------------------------------------------------------------ | ------------------------------ |
+| `-DbPath`   | Folder where databases will be created.                      | `$env:TEMP\firebird-databases` |
+| `-DbPrefix` | String prepended to database name.                           | `test`                         |
+| `-Engines`  | Versions (set of `[fb25`, `fb30`, `fb40`, `fb50]`) to create | `All`                          |
+| `-PageSize` | Database page size                                           | `8192`                         |
+| `-Charset`  | Database default `CHARACTER SET`                             | `UTF8`                         |
 
 
 
@@ -34,8 +46,8 @@ You may inform a database prefix with `-DbPrefix`. If not informed `test` will b
 
 ```powershell
 .\Rebuild-Databases.ps1 -DbPath 'C:\Temp' -DbPrefix 'Foo' -Verbose
-VERBOSE: Creating 'fb25' database in 'C:\Temp\Foo.fb25.fdb'...
-VERBOSE: Creating 'fb30' database in 'C:\Temp\Foo.fb30.fdb'...
-VERBOSE: Creating 'fb40' database in 'C:\Temp\Foo.fb40.fdb'...
-VERBOSE: Creating 'fb50' database in 'C:\Temp\Foo.fb50.fdb'...
+VERBOSE: Creating 'C:\Temp\Foo.fb25.fdb' (PageSize=8192, Charset='UTF8')...
+VERBOSE: Creating 'C:\Temp\Foo.fb30.fdb' (PageSize=8192, Charset='UTF8')...
+VERBOSE: Creating 'C:\Temp\Foo.fb40.fdb' (PageSize=8192, Charset='UTF8')...
+VERBOSE: Creating 'C:\Temp\Foo.fb50.fdb' (PageSize=8192, Charset='UTF8')...
 ```
