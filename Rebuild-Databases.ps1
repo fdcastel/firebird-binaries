@@ -5,8 +5,12 @@ Param(
     $DbPath=$Null,
 
     [System.String]
-    $DbPrefix='test'
-    )
+    $DbPrefix='test',
+    
+    [ValidateSet('All', 'fb25', 'fb30', 'fb40', 'fb50')] 
+    [System.String[]]
+    $Engines = 'All'
+)
 
 $dbFolder = Join-Path $env:TEMP 'firebird-databases'
 if ($DbPath) {
@@ -16,7 +20,10 @@ if ($DbPath) {
 mkdir -Force $dbFolder | Out-Null
 
 # Build databases
-'fb25', 'fb30', 'fb40', 'fb50' | ForEach-Object {
+if ($Engines -eq 'All') {
+    $Engines = 'fb25', 'fb30', 'fb40', 'fb50'
+}
+$Engines | ForEach-Object {
     $engine = $_
 
     $engineFolder = Join-Path $PSScriptRoot $engine
