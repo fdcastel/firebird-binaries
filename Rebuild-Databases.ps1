@@ -9,7 +9,14 @@ Param(
     
     [ValidateSet('All', 'fb25', 'fb30', 'fb40', 'fb50')] 
     [System.String[]]
-    $Engines = 'All'
+    $Engines = 'All',
+    
+    [ValidateSet(4096, 8192, 16384, 32768)] 
+    [System.Int32]
+    $PageSize = 8192,
+
+    [System.String]
+    $Charset = 'UTF8'
 )
 
 $dbFolder = Join-Path $env:TEMP 'firebird-databases'
@@ -32,10 +39,10 @@ $Engines | ForEach-Object {
     $database = Join-Path $dbFolder "$DbPrefix.$engine.fdb"
     Remove-Item $database -Force -ErrorAction SilentlyContinue
 
-    Write-Verbose "Creating '$engine' database in '$database'..."
+    Write-Verbose "Creating '$database' (PageSize=$PageSize, Charset='$Charset')..."
     @"
     CREATE DATABASE '$database'
         USER 'SYSDBA' PASSWORD 'masterkey'
-        PAGE_SIZE 8192 DEFAULT CHARACTER SET UTF8;
+        PAGE_SIZE $PageSize DEFAULT CHARACTER SET $Charset;
 "@ | & $isql -quiet | Out-Null
 }
