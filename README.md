@@ -9,7 +9,7 @@ Minimal set of files to use Firebird Embedded. Ideal for build test environments
 Simply `git checkout` this repository. All necessary files are included.
 
 ```powershell
-git clone --quiet --depth 1 --single-branch https://github.com/fdcastel/firebird-binaries 
+git clone --quiet --depth 1 --branch x86 --single-branch https://github.com/fdcastel/firebird-binaries 
 ```
 
 
@@ -18,7 +18,7 @@ git clone --quiet --depth 1 --single-branch https://github.com/fdcastel/firebird
 
 Just configure your application to use `fbclient.dll` of the desired Firebird version. The configuration file `firebird.conf` is already configured to use the embedded server.
 
-These are 64-bit binaries. For 32-bit please use the [`x86` branch](https://github.com/fdcastel/firebird-binaries/tree/x86) of this repository.
+These are 32-bit binaries. For 64-bit please use the [`master` branch](https://github.com/fdcastel/firebird-binaries) of this repository.
 
 
 
